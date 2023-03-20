@@ -2,6 +2,7 @@
 
 ### Ganti IP di value.yaml
 
+```
 core5g-upf-svc.open5gs.svc.cluster.local
 core5g-amf.open5gs.svc.cluster.local
 gnb-core5g-svc.open5gs.svc.cluster.local
@@ -9,6 +10,7 @@ gnb-core5g-svc.open5gs.svc.cluster.local
 open-upf-svc.netshow.svc.cluster.local
 amf-open5gs-sctp.netshow.svc.cluster.local
 gnb-open-svc.netshow.svc.cluster.local
+```
 
 ### Deploy with helm
 ````

@@ -31,6 +31,6 @@ EOF
 mongo open5gs ./account.js
 ```
 ### Bikin Subscriber di Open5gs. Masukin semuanya ikut di values.yaml, kecuali di bawah :
-sd = ffffff
+```sd = ffffff```
 
 ### Delete/Restart pod amf, gnb, ue.

@@ -11,7 +11,9 @@ amf-open5gs-sctp.netshow.svc.cluster.local
 gnb-open-svc.netshow.svc.cluster.local
 
 ### Deploy with helm
+````
 helm -n open5gs upgrade --install core5g ../helm-chart/
+````
 
 ### Masukin user ke mongodb
 ```

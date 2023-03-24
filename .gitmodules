@@ -1,0 +1,3 @@
+[submodule "opensource-5g-core-service-mesh"]
+	path = opensource-5g-core-service-mesh
+	url = https://bitbucket.org/infinitydon/opensource-5g-core-service-mesh.git

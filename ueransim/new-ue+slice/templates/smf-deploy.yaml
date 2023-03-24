@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-smf
+  labels:
+    epc-mode: {{ .Release.Name }}-smf
+spec:
+  selector:
+    epc-mode: {{ .Release.Name }}-smf
+  ports:
+    - protocol: TCP
+      port: 80 
+      targetPort: 80  
+---  
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-smf-deployment
+  labels:
+    epc-mode: {{ .Release.Name }}-smf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      epc-mode: {{ .Release.Name }}-smf
+  template:
+    metadata:       
+      labels:
+        epc-mode: {{ .Release.Name }}-smf
+    spec:   
+      containers:
+      - name: {{ .Release.Name }}-smf
+        image: "{{ .Values.open5gs.image.repository }}:{{ .Values.open5gs.image.tag }}"
+        imagePullPolicy: {{ .Values.open5gs.image.pullPolicy }}
+        command: ["/bin/sh", "-c"]
+        args:
+        - open5gs-smfd -c /open5gs/config-map/smf.yaml;
+        volumeMounts:
+          - name: {{ .Release.Name }}-smf-config
+            mountPath: /open5gs/config-map/smf.yaml
+            subPath: "smf.yaml"                                       
+      volumes:
+        - name: {{ .Release.Name }}-smf-config
+          configMap:
+            name: {{ .Release.Name }}-smf-config                

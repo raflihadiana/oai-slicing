@@ -1,0 +1,39 @@
+apiVersion: apps/v1 # for tags before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-gnb  
+  labels:
+    app: {{ .Release.Name }}-gnb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-gnb
+  template:
+    metadata:
+      labels:
+        mode: simulator
+        app: {{ .Release.Name }}-gnb     
+      annotations:
+        "cni.projectcalico.org/ipAddrs": "[\"{{ .Values.config.GnbIP }}\"]"      
+    spec:
+      serviceAccountName: {{ .Release.Name }}-k8s-wait-for     
+      containers:
+      - name: {{ .Release.Name }}-gnb
+        image: "{{ .Values.ueransim.repository }}:{{ .Values.ueransim.tag }}"
+        imagePullPolicy: {{ .Values.ueransim.pullPolicy }}        
+        command: ["/bin/sh", "-c"]
+        args:
+        - sleep 10;
+          apt-get update && apt-get install iputils-ping iproute2 -y;          
+          ./nr-gnb -c open5gs-gnb.yaml;
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: {{ .Release.Name }}-gnb-config
+          mountPath: /UERANSIM/build/open5gs-gnb.yaml
+          subPath: open5gs-gnb.yaml             
+      volumes:
+        - name: {{ .Release.Name }}-gnb-config
+          configMap:
+            name: {{ .Release.Name }}-config 

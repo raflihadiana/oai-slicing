@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnb-{{ .Release.Name }}-svc
+  labels:
+    app: {{ .Release.Name }}-gnb
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: gnb-sctp
+      port: 38412
+      targetPort: 38412
+      protocol: SCTP
+
+  selector:
+    app: {{ .Release.Name }}-gnb

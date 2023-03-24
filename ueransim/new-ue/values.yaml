@@ -1,0 +1,36 @@
+# Default values for open5gs-epc-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+ueransim:
+   repository: registry.gitlab.com/infinitydon/registry/ueransim
+   pullPolicy: IfNotPresent
+   tag: "v3.2.6"   
+   ue:
+     imsi: imsi-208930000000011
+     imei: "356938035643803"
+     imeiSv: "4370816125816151"
+     op: "63bfa50ee6523365ff14c1f45f88737d"
+     secKey: "0C0A34601D4F07677303652C0462535B"    
+
+k8swait:
+   repository: groundnuty/k8s-wait-for
+   pullPolicy: IfNotPresent
+   tag: "v1.4" 
+
+dnn: internet
+
+config:
+  upfIP: "core5g-upf-svc.open5gs.svc.cluster.local"    
+  amfIP: "amf-open5gs-sctp.open5gs.svc.cluster.local"
+  amfPort: "38412"
+  GnbIP: "gnb-core5g-svc.open5gs.svc.cluster.local"  
+  mcc: 208
+  mnc: 93
+  tac: 7
+  sd: 1
+  sst: 1
+
+# Primary/Native kubernetes interface
+k8s:
+ interface: eth0

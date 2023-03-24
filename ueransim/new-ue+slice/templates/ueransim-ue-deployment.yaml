@@ -1,0 +1,44 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-ue
+  labels:
+    app: {{ .Release.Name }}-ue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-ue
+  template:
+    metadata:
+      labels:
+        mode: simulator
+        app: {{ .Release.Name }}-ue
+    spec:
+      serviceAccountName: {{ .Release.Name }}-k8s-wait-for    
+      initContainers:
+      - name: wait-for-gnb
+        image: "{{ .Values.k8swait.repository }}:{{ .Values.k8swait.tag }}"
+        imagePullPolicy: {{ .Values.k8swait.pullPolicy }}
+        args:
+          - "pod"
+          - "-lapp=core5g-gnb"
+          #- "-lapp=ueransim-gnb" 
+      containers:
+      - name: {{ .Release.Name }}-ue
+        image: "{{ .Values.ueransim.repository }}:{{ .Values.ueransim.tag }}"
+        imagePullPolicy: {{ .Values.ueransim.pullPolicy }}        
+        command: ["/bin/sh", "-c"]
+        args:
+        - sleep 5;
+          ./nr-ue -c open5gs-ue.yaml;
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: {{ .Release.Name }}-ue-config
+          mountPath: /UERANSIM/build/open5gs-ue.yaml
+          subPath: open5gs-ue.yaml
+      volumes:
+        - name: {{ .Release.Name }}-ue-config
+          configMap:
+            name: {{ .Release.Name }}-config

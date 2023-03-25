@@ -1,6 +1,9 @@
 # Impelementasi SDN Network Slicing dalam jaringan 5G Cloud Native
 
+## Aristektur Demo
 <img src="https://github.com/raflihadiana/net-show/blob/main/arsitektur-demo.png"/>
+
+## Cara Implementasi
 
 ### Ganti IP di value.yaml
 

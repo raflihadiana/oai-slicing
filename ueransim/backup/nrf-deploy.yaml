@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-nrf
   labels:
-    epc-mode: {{ .Release.Name }}-nrf
+    epc-mode: nrf
 spec:
   selector:
-    epc-mode: {{ .Release.Name }}-nrf
+    epc-mode: nrf
   ports:
     - protocol: TCP
       port: 80
@@ -17,18 +17,18 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-nrf-deployment
   labels:
-    epc-mode: {{ .Release.Name }}-nrf
+    epc-mode: nrf
 spec:
   replicas: 1
   selector:
     matchLabels:
-      epc-mode: {{ .Release.Name }}-nrf
+      epc-mode: nrf
   template:
     metadata:
 #      annotations:
 #        "helm.sh/hook": pre-install    
       labels:
-        epc-mode: {{ .Release.Name }}-nrf
+        epc-mode: nrf
     spec:  
       containers:
         - name: nrf

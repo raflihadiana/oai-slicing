@@ -22,7 +22,7 @@ spec:
         imagePullPolicy: {{ .Values.k8swait.pullPolicy }}
         args:
           - "pod"
-          - "-lapp=core5g-gnb"
+          - "-lapp={{ .Release.Name }}-gnb"
           #- "-lapp=ueransim-gnb" 
       containers:
       - name: {{ .Release.Name }}-ue

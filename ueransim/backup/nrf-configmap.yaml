@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-nrf-config
   labels:
-    epc-mode: {{ .Release.Name }}-nrf
+    epc-mode: nrf
 data:
   nrf.yaml: |
     logger:

@@ -8,8 +8,8 @@ data:
   amf.yaml: |
     logger:
         file: /var/log/open5gs/amf.log
-        #level: debug
-        #domain: sbi
+        level: debug
+        domain: sbi
 
     amf:
         sbi:
@@ -23,7 +23,7 @@ data:
               mnc: {{ .Values.config.mnc }}
             amf_id:
               region: 2
-              set: 1
+              set: 0
         tai:
           - plmn_id:
               mcc: {{ .Values.config.mcc }}
@@ -34,14 +34,14 @@ data:
             mcc: {{ .Values.config.mcc }}
             mnc: {{ .Values.config.mnc }}
           s_nssai:
-          - sst: 2
-            sd: 2
+          - sst: {{ .Values.config.sst }}
+            sd: {{ .Values.config.sd }}
         security:
             integrity_order : [ NIA2, NIA1, NIA0 ]
             ciphering_order : [ NEA0, NEA1, NEA2 ]
         network_name:
-            full: Open5GS
-        amf_name: open5gs-amf0
+            full: Slice-1
+        amf_name: slice-1-amf1
 
     nrf:
      sbi:

@@ -17,7 +17,14 @@ spec:
       annotations:
         "cni.projectcalico.org/ipAddrs": "[\"{{ .Values.config.GnbIP }}\"]"      
     spec:
-      serviceAccountName: {{ .Release.Name }}-k8s-wait-for     
+      serviceAccountName: {{ .Release.Name }}-k8s-wait-for
+      initContainers:      
+      - name: wait-for-amf
+        image: "{{ .Values.k8swait.repository }}:{{ .Values.k8swait.tag }}"
+        imagePullPolicy: {{ .Values.k8swait.pullPolicy }}
+        args:
+          - "pod"
+          - "-lepc-mode={{ .Release.Name }}-amf"         
       containers:
       - name: {{ .Release.Name }}-gnb
         image: "{{ .Values.ueransim.repository }}:{{ .Values.ueransim.tag }}"

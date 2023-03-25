@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-nssf
+  labels:
+    epc-mode: {{ .Release.Name }}-nssf
+spec:
+  selector:
+    epc-mode: {{ .Release.Name }}-nssf
+  ports:
+    - protocol: TCP
+      port: 80 
+      targetPort: 80  
+---  
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-nssf-deployment  
+  labels:
+    epc-mode: {{ .Release.Name }}-nssf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      epc-mode: {{ .Release.Name }}-nssf
+  template:
+    metadata:
+      labels:
+        epc-mode: {{ .Release.Name }}-nssf
+    spec:   
+      containers:
+        - name: {{ .Release.Name }}-nssf
+          image: "{{ .Values.open5gs.image.repository }}:{{ .Values.open5gs.image.tag }}"
+          imagePullPolicy: {{ .Values.open5gs.image.pullPolicy }}
+          command: ["open5gs-nssfd", "-c", "/open5gs/config-map/nssf.yaml"]
+          volumeMounts:
+          - name: {{ .Release.Name }}-nssf-config
+            mountPath: /open5gs/config-map/nssf.yaml
+            subPath: "nssf.yaml"          
+      volumes:
+        - name: {{ .Release.Name }}-nssf-config
+          configMap:
+            name: {{ .Release.Name }}-nssf-config           
